@@ -17,12 +17,15 @@ repositories {
 apply plugin : "java"
 apply plugin: "idea"
 apply plugin: "com.google.protobuf"
+apply plugin: "application"
+
 sourceCompatibility = 1.8
 
 dependencies {
     compile 'io.grpc:grpc-netty-shaded:1.17.1'
     compile 'io.grpc:grpc-protobuf:1.17.1'
     compile 'io.grpc:grpc-stub:1.17.1'
+    compile 'joda-time:joda-time:2.10.1'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -42,7 +45,12 @@ protobuf {
     }
 }
 
-task execute(type:JavaExec) {
-    main = mainClass
+task runserver(type:JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
+    main = "xyz.alexakarpov.grpc.greeting.server.GreetingServer"
+}
+
+task runclient(type:JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "xyz.alexakarpov.grpc.client.GreetingClient"
 }
