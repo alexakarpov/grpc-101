@@ -5,35 +5,30 @@ import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 
+import static xyz.alexakarpov.grpc.utils.Utils.timeStr;
+
 public class GreetingServer {
-    public static long time() {
-        return System.currentTimeMillis();
-    }
+
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println(String.format("Hello from %d at %d",
+        System.out.println(String.format("Going to start the server from thread %d at %s",
                 Thread.currentThread().getId(),
-                time()));
+                timeStr()));
         Server server = ServerBuilder.forPort(50051)
                 .addService(new GreetServiceImpl())
                 .build();
-        System.out.println(String.format("Starting the server on %d at %d",
-                Thread.currentThread().getId(),
-                time()));
         server.start();
-        System.out.println(String.format("Will this print - on %d at %d?", Thread.currentThread().getId(),
-                time()));
+        System.out.println(String.format("Server started at %s", timeStr()));
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-             System.out.println(String.format("Received shutdown request in %d at %d",
-                     Thread.currentThread().getId(),
-                     time()));
-            server.shutdown();
-            System.out.println(String.format("We're all done here in %d at %d",
+            System.out.println(String.format("Received shutdown request in %d at %s",
                     Thread.currentThread().getId(),
-                    time()));
+                    timeStr()));
+            server.shutdown();
         }));
 
-        System.out.println(String.format("How about this? - at %d", Thread.currentThread().getId()));
+        System.out.println(String.format("Hook add on %d at %s",
+                Thread.currentThread().getId(),
+                timeStr()));
         server.awaitTermination();
-        System.out.println("But surely not this!");
+        System.out.println("This will never print.");
     }
 }
