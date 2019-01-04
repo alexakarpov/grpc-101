@@ -4,6 +4,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import xyz.alexakarpov.proto.greet.*;
 
+import java.util.Iterator;
+
 import static xyz.alexakarpov.grpc.utils.Utils.timeStr;
 
 public class GreetingClient {
@@ -17,13 +19,27 @@ public class GreetingClient {
 
         GreetServiceGrpc.GreetServiceBlockingStub syncGreetClient = GreetServiceGrpc.newBlockingStub(chan);
 
-        doGreetingDance(syncGreetClient, "Alex", "Foo");
-        doGreetingDance(syncGreetClient, "Bill", "Bar");
-        doGreetingDance(syncGreetClient, "Karl", "Baz");
+        // unary stuff
+//        doGreetingDance(syncGreetClient, "Alex", "Foo");
+//        doGreetingDance(syncGreetClient, "Bill", "Bar");
+//        doGreetingDance(syncGreetClient, "Karl", "Baz");
+//
+//        System.out.println("Now let's do some addition");
+//        doAddDance(syncGreetClient, 21, 21);
+//        System.out.println("Shutting channel down");
 
-        System.out.println("Now let's do some addition");
-        doAddDance(syncGreetClient, 21, 21);
-        System.out.println("Shutting channel down");
+        // Server streaming
+        GreetManyTimesRequest req = GreetManyTimesRequest.newBuilder()
+                .setGreeting(Greeting.newBuilder().setFirstName("Alejandro").build())
+                .build();
+
+        Iterator<GreetManyTimesResponse> gmtrIterator = syncGreetClient.greetManyTimes(req);
+        gmtrIterator.forEachRemaining(greetManyTimesResponse -> {
+            System.out.println(String.format("Got a response of %s at %s",
+                    greetManyTimesResponse.getResult(),
+                    timeStr()));
+        });
+
         chan.shutdown();
     }
 

@@ -31,8 +31,17 @@ message AddResponse {
     int32 result = 1;
 }
 
+message GreetManyTimesRequest {
+    Greeting greeting = 1;
+}
+
+message GreetManyTimesResponse {
+    string result = 1;
+}
+
 service GreetService {
     //unary
     rpc Greet (GreetRequest) returns (GreetResponse) {};
     rpc Add (AddRequest) returns (AddResponse) {};
+    rpc GreetManyTimes (GreetManyTimesRequest) returns (stream GreetManyTimesResponse) {}
 }
