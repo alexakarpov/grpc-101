@@ -1,11 +1,7 @@
 package xyz.alexakarpov.grpc.greeting.server;
 
 import io.grpc.stub.StreamObserver;
-import org.joda.time.DateTime;
-import xyz.alexakarpov.proto.greet.GreetRequest;
-import xyz.alexakarpov.proto.greet.GreetResponse;
-import xyz.alexakarpov.proto.greet.GreetServiceGrpc;
-import xyz.alexakarpov.proto.greet.Greeting;
+import xyz.alexakarpov.proto.greet.*;
 
 import static xyz.alexakarpov.grpc.utils.Utils.timeStr;
 
@@ -36,5 +32,24 @@ public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
                 timeStr()));
         // complete rpc
         responseObserver.onCompleted();;
+    }
+
+    @Override
+    public void add(AddRequest request, StreamObserver<AddResponse> observer) {
+        System.out.println(String.format("Server got remote call at %s:\n%s",
+                timeStr(),
+                request.toString()));
+        Addition add = request.getAddition();
+        int first = add.getFirstNum();
+        int second = add.getSecondNum();
+        int result = first + second;
+        AddResponse response = AddResponse.newBuilder()
+                .setResult(result)
+                .build();
+        observer.onNext(response);
+        System.out.println(String.format("Sent the response:\n%s\nat %s",
+                response.toString(),
+                timeStr()));
+        observer.onCompleted();
     }
 }
