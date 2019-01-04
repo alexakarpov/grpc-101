@@ -18,7 +18,21 @@ message GreetResponse {
     string result = 1;
 }
 
+message Addition {
+    int32 firstNum = 1;
+    int32 secondNum = 2;
+}
+
+message AddRequest {
+    Addition addition = 1;
+}
+
+message AddResponse {
+    int32 result = 1;
+}
+
 service GreetService {
     //unary
     rpc Greet (GreetRequest) returns (GreetResponse) {};
+    rpc Add (AddRequest) returns (AddResponse) {};
 }
