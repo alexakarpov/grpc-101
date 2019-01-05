@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package greet;
+package demo;
 
-option java_package = "xyz.alexakarpov.proto.greet";
+option java_package = "xyz.alexakarpov.proto.demo";
 option java_multiple_files = true;
 
 message Greeting {
@@ -42,6 +42,9 @@ message GreetManyTimesResponse {
 service GreetService {
     //unary
     rpc Greet (GreetRequest) returns (GreetResponse) {};
-    rpc Add (AddRequest) returns (AddResponse) {};
     rpc GreetManyTimes (GreetManyTimesRequest) returns (stream GreetManyTimesResponse) {}
+}
+
+service MathService {
+    rpc Add (AddRequest) returns (AddResponse) {};
 }
