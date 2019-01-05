@@ -2,13 +2,13 @@ package xyz.alexakarpov.grpc.client;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import xyz.alexakarpov.proto.greet.*;
+import xyz.alexakarpov.proto.demo.*;
 
 import java.util.Iterator;
 
 import static xyz.alexakarpov.grpc.utils.Utils.timeStr;
 
-public class GreetingClient {
+public class AllClient {
     public static void main(String[] args) {
         System.out.println(String.format("Client execustion started at %s",
                 timeStr()));
@@ -18,15 +18,16 @@ public class GreetingClient {
                 .build();
 
         GreetServiceGrpc.GreetServiceBlockingStub syncGreetClient = GreetServiceGrpc.newBlockingStub(chan);
+        MathServiceGrpc.MathServiceBlockingStub syncMathClient = MathServiceGrpc.newBlockingStub(chan);
 
         // unary stuff
-//        doGreetingDance(syncGreetClient, "Alex", "Foo");
-//        doGreetingDance(syncGreetClient, "Bill", "Bar");
-//        doGreetingDance(syncGreetClient, "Karl", "Baz");
-//
-//        System.out.println("Now let's do some addition");
-//        doAddDance(syncGreetClient, 21, 21);
-//        System.out.println("Shutting channel down");
+        doGreetingDance(syncGreetClient, "Alex", "Foo");
+        doGreetingDance(syncGreetClient, "Bill", "Bar");
+        doGreetingDance(syncGreetClient, "Karl", "Baz");
+
+        System.out.println("Now let's do some addition");
+        doAddDance(syncMathClient, 21, 21);
+        System.out.println("Shutting channel down");
 
         // Server streaming
         GreetManyTimesRequest req = GreetManyTimesRequest.newBuilder()
@@ -68,7 +69,7 @@ public class GreetingClient {
                 response.getResult()));
     }
 
-    private static void doAddDance(GreetServiceGrpc.GreetServiceBlockingStub syncGreetClient,
+    private static void doAddDance(MathServiceGrpc.MathServiceBlockingStub syncMathClient,
                                         int firstNum,
                                         int secondNum) {
         Addition a;
@@ -86,7 +87,7 @@ public class GreetingClient {
         System.out.println(String.format("Sending the RPC at %s with request:\n%s",
                 timeStr(),
                 r.toString()));
-        response = syncGreetClient.add(r);
+        response = syncMathClient.add(r);
 
         System.out.println(String.format("Received response at %s\n%s",
                 timeStr(),
