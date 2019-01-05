@@ -47,12 +47,12 @@ protobuf {
 
 task runserver(type:JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    mainClassName = "xyz.alexakarpov.grpc.greeting.server.GreetingServer"
-    main = "xyz.alexakarpov.grpc.greeting.server.GreetingServer"
+    mainClassName = "xyz.alexakarpov.grpc.services.HostServer"
+    main = "xyz.alexakarpov.grpc.services.HostServer"
 }
 
 task runclient(type:JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    mainClassName = "xyz.alexakarpov.grpc.client.GreetingClient"
-    main = "xyz.alexakarpov.grpc.client.GreetingClient"
+    mainClassName = "xyz.alexakarpov.grpc.client.AllClient"
+    main = "xyz.alexakarpov.grpc.client.AllClient"
 }
